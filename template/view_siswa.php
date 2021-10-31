@@ -1,16 +1,19 @@
 <?php
 $DB = DB::getInstance();
 
-$DB->select('kelas_siswa.idk');
-
 $email_user = $_SESSION['email'];
-$id_kelas = $DB->get('kelas_siswa', 'INNER JOIN siswa ON siswa.nis = kelas_siswa.nis WHERE email=?;', [$email_user])[0]->idk;
+$siswa = $DB->getWhereOnce('siswa', ['email','=',$email_user]);
 
-$DB->select('kelas.nama AS nama_kelas, guru.nama AS wali_kelas');
-$kelas = $DB->get('kelas', 'INNER JOIN guru ON kelas.nig = guru.nig WHERE idk=?', [$id_kelas])[0];
+$kelas_siswa = $DB->getWhereOnce('kelas_siswa', ['nis','=',$siswa->nis]);
 
-$DB->select('siswa.*');
-$tabelSiswa = $DB->get('kelas_siswa', 'INNER JOIN siswa ON siswa.nis = kelas_siswa.nis WHERE idk=?', [$id_kelas]);
+$tabelSiswa = [];
+if ($kelas_siswa) {
+    $DB->select('kelas.nama AS nama_kelas, guru.nama AS wali_kelas');
+    $kelas = $DB->get('kelas', 'INNER JOIN guru ON kelas.nig = guru.nig WHERE idk=?', [$kelas_siswa->idk])[0];
+    
+    $DB->select('siswa.*');
+    $tabelSiswa = $DB->get('kelas_siswa', 'INNER JOIN siswa ON siswa.nis = kelas_siswa.nis WHERE idk=?', [$kelas_siswa->idk]);
+}
 
 if (!empty($_GET)) {
     $tableTemp = [];
@@ -27,12 +30,12 @@ if (!empty($_GET)) {
 <div class="container">
     <div class="row">
         <div class="col-12">
+            <?php if (!empty($tabelSiswa)) : ?>
+
             <div class="py-4 d-flex justify-content-end align-items-center">
                 <h1 class="h2 mr-auto text-info">
                     Kelas <?= $kelas->nama_kelas; ?> :
                 </h1>
-
-
 
                 <form class="w-25 ml-4" method="get">
                     <div class="input-group">
@@ -43,7 +46,6 @@ if (!empty($_GET)) {
                     </div>
                 </form>
             </div>
-            <?php if (!empty($tabelSiswa)) : ?>
             <table class="table table-striped">
                 <thead>
                     <tr class="text-center">
@@ -66,9 +68,12 @@ if (!empty($_GET)) {
                      ?>
                 </tbody>
             </table>
+            <?php else: ?>
+            <h3 class="text-center py-3">Tidak terdaftar ke kelas, hubungi admin !</h3>
             <?php endif; ?>
             <br>
-            <p><b>Wali kelas : (<?= $kelas->wali_kelas; ?>)</b></p>
+            <p><b>Wali kelas : (<?= $kelas->wali_kelas?? ''; ?>)</b>
+            </p>
         </div>
     </div>
 </div>

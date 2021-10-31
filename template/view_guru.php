@@ -6,8 +6,13 @@ $email_user = $_SESSION['email'];
 $guru = $DB->getWhereOnce('guru', ['email','=',$email_user]);
 $kelas = $DB->getWhereOnce('kelas', ['nig','=',$guru->nig]);
 
-$DB->select('siswa.*');
-$tabelSiswa = $DB->get('kelas_siswa', 'INNER JOIN siswa ON siswa.nis = kelas_siswa.nis WHERE idk=?', [$kelas->idk]);
+
+$tabelSiswa = [];
+if ($kelas) {
+    $DB->select('siswa.*');
+    $tabelSiswa = $DB->get('kelas_siswa', 'INNER JOIN siswa ON siswa.nis = kelas_siswa.nis WHERE idk=?', [$kelas->idk]);
+}
+
 
 if (!empty($_GET)) {
     $tableTemp = [];
@@ -22,6 +27,7 @@ if (!empty($_GET)) {
 <div class="container">
     <div class="row">
         <div class="col-12">
+            <?php if (!empty($tabelSiswa)) : ?>
             <div class="py-4 d-flex justify-content-end align-items-center">
                 <h1 class="h2 mr-auto text-info">
                     Daftar siswa :
@@ -36,7 +42,7 @@ if (!empty($_GET)) {
                     </div>
                 </form>
             </div>
-            <?php if (!empty($tabelSiswa)) : ?>
+
             <table class="table table-striped">
                 <thead>
                     <tr class="text-center">
@@ -64,8 +70,11 @@ if (!empty($_GET)) {
                      ?>
                 </tbody>
             </table>
+            <?php else: ?>
+            <h3 class="text-center py-3">Tidak ada data siswa, hubungi admin !</h3>
             <?php endif; ?>
-            <p><b>Kelas : (<?= $kelas->nama; ?>)</b></p>
+            <p><b>Kelas : (<?= $kelas->nama?? 'Belum ada kelas yang di asuh'; ?>)</b>
+            </p>
 
         </div>
     </div>
