@@ -1,4 +1,26 @@
-<?php
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+    shrink-to-fit=no">
+    <title>Sistem Informasi Sekolah</title>
+    <link rel="icon" href="img/favicon.png" type="image/png">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container" class="py-5">
+        <div class="row">
+            <div class="col-12 py-4 mx-auto text-center">
+                <h3 class="mt-5">Proses Generate Database</h3>
+                <hr class="w-50">
+                <ul style="list-style-type: none;">
+                    <?php
+
+//KONFIGURASI DATABASE SERVER DISINI
 $host = "localhost";
 $user = "root";
 $pass = "";
@@ -13,7 +35,7 @@ try {
     $result = $pdo->query($query);
 
     if ($result !== false) {
-        echo "Database SISekolah berhasil dihapus ! <br>";
+        echo "<li>Database SISekolah berhasil dihapus ! </li>";
     }
 
     $query = "CREATE DATABASE SISekolah";
@@ -21,7 +43,7 @@ try {
     $result = $pdo->query($query);
 
     if ($result !== false) {
-        echo "Database SISekolah berhasil dibuat ! <br>";
+        echo "<li>Database SISekolah berhasil dibuat ! </li>";
     }
 
     $pdo->query("USE SISekolah");
@@ -31,7 +53,7 @@ try {
     $result = $pdo->query($query);
 
     if ($result !== false) {
-        echo "Table guru berhasil dihapus ! <br>";
+        echo "<li>Table guru berhasil dihapus ! </li>";
     }
 
     $query = <<<EOT
@@ -47,7 +69,7 @@ try {
     $result = $pdo->query($query);
 
     if ($result !== false) {
-        echo "Table guru berhasil dibuat ! <br>";
+        echo "<li>Table guru berhasil dibuat ! </li>";
     }
 
     $query = "DROP TABLE IF EXISTS kelas";
@@ -55,7 +77,7 @@ try {
     $result = $pdo->query($query);
 
     if ($result !== false) {
-        echo "Table kelas berhasil dihapus ! <br>";
+        echo "<li>Table kelas berhasil dihapus ! </li>";
     }
 
     $query = <<<EOT
@@ -70,7 +92,7 @@ try {
     $result = $pdo->query($query);
 
     if ($result !== false) {
-        echo "Table kelas berhasil dibuat ! <br>";
+        echo "<li>Table kelas berhasil dibuat ! </li>";
     }
 
     $query = "DROP TABLE IF EXISTS siswa";
@@ -78,7 +100,7 @@ try {
     $result = $pdo->query($query);
 
     if ($result !== false) {
-        echo "Table siswa berhasil dihapus ! <br>";
+        echo "<li>Table siswa berhasil dihapus ! </li>";
     }
 
     $query = <<<EOT
@@ -94,7 +116,7 @@ try {
     $result = $pdo->query($query);
 
     if ($result !== false) {
-        echo "Table siswa berhasil dibuat ! <br>";
+        echo "<li>Table siswa berhasil dibuat !</li>";
     }
 
     $query = <<<EOT
@@ -110,13 +132,50 @@ try {
     $result = $pdo->query($query);
 
     if ($result !== false) {
-        echo "Table kelas siswa berhasil dibuat ! <br>";
+        echo "<li>Table kelas siswa berhasil dibuat !</li>";
     }
+
+    $query = <<<EOT
+            CREATE TABLE admin (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                nama VARCHAR(50),
+                email VARCHAR(50),
+                password VARCHAR(100)
+            );
+            EOT;
+
+    $result = $pdo->query($query);
+
+    if ($result !== false) {
+        echo "<li>Table admin berhasil dibuat!</li>";
+    }
+
+    $adminPassword = password_hash("admin123", PASSWORD_DEFAULT);
+
+    $query = "INSERT INTO admin VALUES ('','admin','admin@admin.com','$adminPassword')";
+    $result = $pdo->query($query);
+
+    if ($result !== false) {
+        echo "<li>Data admin berhasil ditambah!</li>";
+    } ?>
+
+
+                </ul>
+                <hr class="w-50">
+                <p class="lead">Database berhasil dibuat, silahkan <a href="login.php">
+                        Login </a>dengan email: <code>admin@admin.com</code>, password: <code>admin123</code>
+                    <br>Atau <a href="register.php">Register</a> untuk membuat user baru
+                </p>
+
+                <?php
 } catch (PDOException $e) {
-    die("Query / Koneksi Error: ". $e->getMessage() ." (" . $e->getCode() .")");
-} finally {
-    $pdo = null;
-}
-
-
-// SELECT siswa.nama AS nama_siswa, kelas.nama AS kelas, guru.nama AS wali_kelas  from kelas_siswa INNER JOIN siswa ON siswa.nis = kelas_siswa.nis INNER JOIN kelas ON kelas.idk = kelas_siswa.idk INNER JOIN guru ON guru.nig = kelas.nig;
+        die("Query / Koneksi Error: ". $e->getMessage() ." (" . $e->getCode() .")");
+    } finally {
+        $pdo = null;
+    }
+?>
+            </div>
+        </div>
+    </div>
+    <?php
+    include "template/footer.php";

@@ -65,6 +65,8 @@ if (!empty($_GET['add_class']) && $_GET['add_class'] == 'success') {
                      ?>
                 </tbody>
             </table>
+            <?php else: ?>
+            <p class="h5 text-center py-4">Data siswa tidak ada, Silahkan Register Siswa !</p>
             <?php endif; ?>
         </div>
         <div class="col-12">
@@ -112,6 +114,8 @@ if (!empty($_GET['add_class']) && $_GET['add_class'] == 'success') {
                      ?>
                 </tbody>
             </table>
+            <?php else: ?>
+            <p class="h5 text-center py-4">Data Guru Tidak Ada, Silahkan Register Guru !</p>
             <?php endif; ?>
         </div>
         <div class="col-12">
@@ -158,6 +162,8 @@ if (!empty($_GET['add_class']) && $_GET['add_class'] == 'success') {
                      ?>
                 </tbody>
             </table>
+            <?php else: ?>
+            <p class="h5 text-center py-4">Data kelas tidak ada, Silahkan Tambah Kelas !</p>
             <?php endif; ?>
         </div>
     </div>
