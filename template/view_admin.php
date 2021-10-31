@@ -24,10 +24,9 @@ if (!empty($_GET['add_class']) && $_GET['add_class'] == 'success') {
                 <h1 class="h2 mr-auto text-info">
                     Daftar siswa :
                 </h1>
-                <a href="register_kelas.php"
-                    class="btn btn-info <?= empty($tabelKelas)?'disabled':''; ?>">Daftarkan
-                    Siswa
-                    ke kelas</a>
+                <a href="atur_kelas.php"
+                    class="btn btn-info <?= empty($tabelKelas)?'disabled':''; ?>">Atur
+                    Kelas</a>
 
                 <form class="w-25 ml-4" method="get">
                     <div class="input-group">
@@ -150,8 +149,8 @@ if (!empty($_GET['add_class']) && $_GET['add_class'] == 'success') {
                             echo "<td>{$kelas->nama_kelas}</td>";
                             echo "<td>{$kelas->wali_kelas}</td>";
                             echo "<td class=\"text-center\">";
-                            echo "<a href=\"edit_user.php?id={$kelas->idk}\" class=\"btn btn-info\" disabled>Edit</a> ";
-                            echo "<a href=\"hapus_user.php?id={$kelas->idk}\" class=\"btn btn-danger\">Hapus</a>";
+                            echo "<a href=\"edit_kelas.php?id={$kelas->idk}\" class=\"btn btn-info\" disabled>Edit</a> ";
+                            echo "<a href=\"delete_kelas.php?id={$kelas->idk}\" class=\"btn btn-danger\">Hapus</a>";
                             echo "</td>";
              
                             echo "</tr>";

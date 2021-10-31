@@ -51,4 +51,25 @@ class Kelas
 
         return $this->_db->insert('kelas', $kelasBaru);
     }
+
+    public function insertToClass($idk, $nis)
+    {
+        $daftarSiswa = ['nis'=> $nis, 'idk'=>$idk];
+
+        return $this->_db->insert('kelas_siswa', $daftarSiswa);
+    }
+
+    public function deleteFromClass($nis)
+    {
+        return $this->_db->delete('kelas_siswa', ['nis','=',$nis]);
+    }
+
+    public function generate($nis)
+    {
+        $result = $this->_db->get('siswa', 'INNER JOIN kelas_siswa ON siswa.nis = kelas_siswa.nis WHERE kelas_siswa.nis = ?', [$nis])[0];
+    
+        foreach ($result as $key=>$val) {
+            $this->_formItem[$key] = $val;
+        }
+    }
 }
