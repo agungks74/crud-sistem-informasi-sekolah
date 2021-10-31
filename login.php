@@ -1,6 +1,10 @@
 <?php
 require "init.php";
 
+if (isset($_SESSION['email'])) {
+    header("Location: dashboard.php");
+}
+
 $user = new User;
 
 if (!empty($_POST)) {
