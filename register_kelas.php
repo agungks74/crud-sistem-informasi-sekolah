@@ -3,19 +3,31 @@ require "init.php";
 
 $kelas = new Kelas();
 
+
+$DB = DB::getInstance();
+
+$tabelGuru = $DB->get('guru');
+$DB->select('nig');
+$tabelKelas = $DB->get('kelas');
+
 if (!empty($_POST)) {
-    $pesanError = $kelas->validasi($_POST);
+    $selectOption = "";
+    if (!empty($tabelGuru)) {
+        for ($i=0;$i<count($tabelGuru)-1;$i++) {
+            $selectOption .= $tabelGuru[$i]->nig ."|";
+        }
+    
+        $selectOption .= $tabelGuru[count($tabelGuru)-1]->nig;
+    }
+
+
+    $pesanError = $kelas->validasi($_POST, $selectOption);
     if (empty($pesanError)) {
         $kelas->insert();
 
         header("Location: dashboard.php?add_class=success");
     }
 }
-$DB = DB::getInstance();
-
-$tabelGuru = $DB->get('guru');
-$DB->select('nig');
-$tabelKelas = $DB->get('kelas');
 
 $tabelTemp = [];
 foreach ($tabelKelas as $kelas) {

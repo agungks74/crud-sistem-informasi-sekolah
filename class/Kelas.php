@@ -9,7 +9,7 @@ class Kelas
         $this->_db = DB::getInstance();
     }
 
-    public function validasi($formMethod)
+    public function validasi($formMethod, $optionSelect = "")
     {
         $validate = new Validate($formMethod);
         
@@ -22,7 +22,13 @@ class Kelas
         ]
         );
 
-        $this->_formItem['wali_kelas'] = Input::get('wali_kelas');
+        $this->_formItem['wali_kelas'] = $validate->setRules(
+            'wali_kelas',
+            'Wali Kelas',
+            ['sanitize' => 'string',
+            'required' => true,
+            'regexp' => '/^'.$optionSelect.'$/']
+        );
 
         if (!$validate->isPassed()) {
             return $validate->getError();

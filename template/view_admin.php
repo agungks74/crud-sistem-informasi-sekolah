@@ -26,6 +26,7 @@ if (!empty($_GET['add_class']) && $_GET['add_class'] == 'success') {
                 </h1>
                 <a href="register_kelas.php"
                     class="btn btn-info <?= empty($tabelKelas)?'disabled':''; ?>">Daftarkan
+                    Siswa
                     ke kelas</a>
 
                 <form class="w-25 ml-4" method="get">

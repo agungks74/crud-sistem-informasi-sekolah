@@ -8,9 +8,8 @@ class User
     public function validasiInsert($formMethod)
     {
         $validate = new Validate($formMethod);
-
-        $this->_categories = Input::get('categories');
-
+       
+        
         $this->_formItem['nama'] = $validate->setRules('nama', 'Nama', [
             'sanitize' => 'string',
             'required' => true,
@@ -30,6 +29,24 @@ class User
                 'required' => true,
                 'matches' => 'password'
                 ]);
+        
+        $this->_formItem['alamat'] = $validate->setRules('alamat', 'Alamat', [
+                    'sanitize' => 'string',
+                    'required' => true,
+                    'min_char' => 1,
+                    ]);
+
+        $this->_categories = $validate->setRules(
+            'categories',
+            'Kategori',
+            ['sanitize' => 'string',
+                            'required' => true,
+                            'regexp' => '/^guru|siswa$/']
+        );
+        
+        if (!$validate->isPassed()) {
+            return $validate->getError();
+        }
 
         $this->_formItem['email'] = $validate->setRules('email', 'Email', [
                 'sanitize' => 'string',
@@ -38,14 +55,9 @@ class User
                 'unique' => [$this->_categories =>'email'],
                 ]);
 
-        $this->_formItem['alamat'] = $validate->setRules('alamat', 'Alamat', [
-                'sanitize' => 'string',
-                'required' => true,
-                'min_char' => 1,
-                ]);
-
-            
-                
+     
+       
+       
         if (!$validate->isPassed()) {
             return $validate->getError();
         }
