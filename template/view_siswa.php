@@ -9,11 +9,18 @@ $id_kelas = $DB->get('kelas_siswa', 'INNER JOIN siswa ON siswa.nis = kelas_siswa
 $DB->select('kelas.nama AS nama_kelas, guru.nama AS wali_kelas');
 $kelas = $DB->get('kelas', 'INNER JOIN guru ON kelas.nig = guru.nig WHERE idk=?', [$id_kelas])[0];
 
+$DB->select('siswa.*');
+$tabelSiswa = $DB->get('kelas_siswa', 'INNER JOIN siswa ON siswa.nis = kelas_siswa.nis WHERE idk=?', [$id_kelas]);
+
 if (!empty($_GET)) {
-    $tabelSiswa = $DB->getLike("siswa", "nama_barang", "%". Input::get("search") ."%");
-} else {
-    $DB->select('siswa.*');
-    $tabelSiswa = $DB->get('kelas_siswa', 'INNER JOIN siswa ON siswa.nis = kelas_siswa.nis WHERE idk=?', [$id_kelas]);
+    $tableTemp = [];
+    foreach ($tabelSiswa as $siswa) {
+        if (preg_match("/". Input::get('search') ."/i", $siswa->nama)) {
+            $tabelTemp[] = $siswa;
+        }
+    }
+
+    $tabelSiswa = $tabelTemp;
 }
 ?>
 

@@ -8,14 +8,6 @@ $user->cekUserSession();
 $DB= DB::getInstance();
 $kategori_user = $_SESSION['categories'];
 
-if (!empty($_GET)) {
-    $tabelSiswa = $DB->getLike("siswa", "nama_barang", "%". Input::get("search") ."%");
-    $tabelGuru = $DB->getLike("siswa", "nama_barang", "%". Input::get("search") ."%");
-} else {
-    $tabelSiswa = $DB->get("siswa");
-    $tabelGuru = $DB->get("guru");
-}
-
 include "template/header.php";
 ?>
 
