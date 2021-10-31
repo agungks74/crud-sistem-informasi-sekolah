@@ -1,11 +1,8 @@
 <?php
-$DB = DB::getInstance();
-
 
 $email_user = $_SESSION['email'];
 $guru = $DB->getWhereOnce('guru', ['email','=',$email_user]);
 $kelas = $DB->getWhereOnce('kelas', ['nig','=',$guru->nig]);
-
 
 $tabelSiswa = [];
 if ($kelas) {
@@ -62,7 +59,7 @@ if (!empty($_GET)) {
                             echo "<td>{$siswa->email}</td>";
                             echo "<td>{$siswa->alamat}</td>";
                             echo "<td class=\"text-center\">";
-                            echo "<a href=\"edit_user.php?id={$siswa->nis}\" class=\"btn btn-info\" disabled>Edit</a> ";
+                            echo "<a href=\"edit_user.php?id={$siswa->nis}\" class=\"btn btn-info\">Edit</a> ";
                             echo "<a href=\"hapus_user.php?id={$siswa->nis}\" class=\"btn btn-danger\">Hapus</a>";
                             echo "</td>";
                             echo "</tr>";

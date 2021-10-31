@@ -63,7 +63,7 @@ try {
                 idk CHAR(8) PRIMARY KEY,
                 nama VARCHAR(50),
                 nig CHAR(8) NOT NULL,
-                FOREIGN KEY (nig) REFERENCES guru(nig)
+                FOREIGN KEY (nig) REFERENCES guru(nig) ON DELETE CASCADE
             );
             EOT;
     
@@ -102,8 +102,8 @@ try {
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 nis CHAR(8),
                 idk CHAR(8),
-                FOREIGN KEY (nis) REFERENCES siswa(nis),
-                FOREIGN KEY (idk) REFERENCES kelas(idk)
+                FOREIGN KEY (nis) REFERENCES siswa(nis) ON DELETE CASCADE,
+                FOREIGN KEY (idk) REFERENCES kelas(idk) ON DELETE CASCADE
             );
             EOT;
     

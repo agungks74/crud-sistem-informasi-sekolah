@@ -7,12 +7,28 @@ if (!empty($_POST)) {
     $pesanError = $kelas->validasi($_POST);
     if (empty($pesanError)) {
         $kelas->insert();
-        header("Location: register_berhasil.php");
+
+        header("Location: dashboard.php?add_class=success");
     }
 }
 $DB = DB::getInstance();
 
-$daftarGuru = $DB->get('guru');
+$tabelGuru = $DB->get('guru');
+$DB->select('nig');
+$tabelKelas = $DB->get('kelas');
+
+$tabelTemp = [];
+foreach ($tabelKelas as $kelas) {
+    $tabelTemp[] = $kelas->nig;
+}
+
+$tabelKelas = $tabelTemp;
+// echo "<pre>";
+// var_dump(in_array('74776631', $tabelKelas));
+// echo "</pre>";
+// die;
+
+
 
 ?>
 
@@ -62,9 +78,12 @@ $daftarGuru = $DB->get('guru');
                     <div class="form-group">
                         <label for="wali_kelas">Wali Kelas : </label>
                         <select class="form-control" name="wali_kelas" id="wali_kelas">
+
                             <?php
-                                foreach ($daftarGuru as $guru) {
-                                    echo "<option value=\"$guru->nig\">($guru->nig) $guru->nama</option>";
+                                foreach ($tabelGuru as $guru) {
+                                    if (!in_array($guru->nig, $tabelKelas)) {
+                                        echo "<option value=\"$guru->nig\">($guru->nig) $guru->nama</option>";
+                                    }
                                 }
                             ?>
                         </select>

@@ -1,5 +1,4 @@
 <?php
-$DB = DB::getInstance();
 
 $email_user = $_SESSION['email'];
 $siswa = $DB->getWhereOnce('siswa', ['email','=',$email_user]);
@@ -31,7 +30,6 @@ if (!empty($_GET)) {
     <div class="row">
         <div class="col-12">
             <?php if (!empty($tabelSiswa)) : ?>
-
             <div class="py-4 d-flex justify-content-end align-items-center">
                 <h1 class="h2 mr-auto text-info">
                     Kelas <?= $kelas->nama_kelas; ?> :

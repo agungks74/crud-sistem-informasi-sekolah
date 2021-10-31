@@ -3,18 +3,24 @@ require "init.php";
 
 $user = new User();
 $user->cekUserSession();
+$categories = Input::get('categories');
 
-if (empty(Input::get('id'))) {
+
+if (empty(Input::get('id')) && empty($categories)) {
     die('Maaf halaman ini tidak bisa diakses langsung');
+} elseif ($categories != 'guru' && $categories != 'siswa') {
+    header("Location: dashboard.php");
 }
 
+$id_col = $categories=='guru'?'nig':'nis';
+
 $user = new User();
-$user->generate(Input::get('id'));
+$user->generate(Input::get('id'), $categories);
 
 if (!empty($_POST)) {
-    $pesanError = $user->validasi($_POST);
+    $pesanError = $user->validasiUpdate($_POST, $categories);
     if (empty($pesanError)) {
-        $user->update($user->getItem('id'));
+        $user->update($categories);
         header("Location: dashboard.php");
     }
 }
@@ -26,7 +32,8 @@ include "template/header.php";
     <div class="row">
         <div class="col-6 py-4">
             <h1 class="h2 mr-auto">
-                <a href="edit_barang.php" class="text-info">Edit Barang</a>
+                <a href="edit_barang.php" class="text-info">Edit <?= ucfirst($categories); ?>:
+                </a>
             </h1>
 
 
@@ -47,30 +54,28 @@ include "template/header.php";
             <?php endif; ?>
             <form method="post">
                 <div class="form-group">
-                    <label for="id_barang">ID Barang</label>
-                    <input type="text" name="id_barang" id="id_barang" class="form-control"
-                        value="<?= $barang->getItem('id_barang'); ?>"
+                    <label for="<?= $id_col; ?>">Nomor Induk
+                        <?= ucfirst($categories); ?></label>
+                    <input type="text" name="<?= $id_col; ?>"
+                        id="<?= $id_col; ?>" class="form-control"
+                        value="<?= $user->getItem($id_col); ?>"
                         disabled>
-                    <small class="d-block">*ID Barang tidak bisa diubah</small>
+                    <small class="d-block">*ID <?= ucfirst($categories); ?>
+                        tidak bisa diubah</small>
                 </div>
                 <div class="form-group">
-                    <label for="nama_barang">Nama Barang</label>
-                    <input type="text" name="nama_barang" id="nama_barang" class="form-control"
-                        value="<?= $barang->getItem('nama_barang'); ?>">
+                    <label for="nama">Nama</label>
+                    <input type="text" name="nama" id="nama" class="form-control"
+                        value="<?= $user->getItem('nama'); ?>">
                 </div>
                 <div class="form-group">
-                    <label for="jumlah_barang">Jumlah Barang</label>
-                    <input type="text" name="jumlah_barang" id="jumlah_barang" class="form-control"
-                        value="<?= $barang->getItem('jumlah_barang'); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="harga_barang">Harga Barang</label>
-                    <input type="text" name="harga_barang" id="harga_barang" class="form-control"
-                        value="<?= $barang->getItem('harga_barang'); ?>">
+                    <label for="alamat">Alamat</label>
+                    <input type="text" name="alamat" id="alamat" class="form-control"
+                        value="<?= $user->getItem('alamat'); ?>">
                 </div>
 
                 <input type="submit" value="Update" class="btn btn-primary">
-                <a href="tampil_barang.php" class="btn btn-secondary">Cancel</a>
+                <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>
