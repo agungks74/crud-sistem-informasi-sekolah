@@ -63,6 +63,7 @@ class User
         } else {
             $this->_db = DB::getInstance();
             $this->_db->select('password, nama');
+            
             $result = $this->_db->getWhereOnce('siswa', ['email','=',$this->_formItem['email']]);
             $this->_categories = 'siswa';
 
@@ -70,6 +71,12 @@ class User
                 $result = $this->_db->getWhereOnce('guru', ['email','=',$this->_formItem['email']]);
                 $this->_categories = 'guru';
             }
+
+            if (empty($result)) {
+                $result = $this->_db->getWhereOnce('admin', ['email','=',$this->_formItem['email']]);
+                $this->_categories = 'admin';
+            }
+            
             if (empty($result) || !password_verify($this->_formItem['password'], $result->password)) {
                 $pesanError[] = "Maaf, username / password salah";
                 return $pesanError;
