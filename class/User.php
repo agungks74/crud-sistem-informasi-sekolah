@@ -84,6 +84,8 @@ class User
                 $this->_categories = 'guru';
             }
 
+      
+
             if (empty($result)) {
                 $result = $this->_db->getWhereOnce('admin', ['email','=',$this->_formItem['email']]);
                 $this->_categories = 'admin';

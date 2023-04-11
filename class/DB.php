@@ -4,7 +4,7 @@ class DB
     private $_host = "127.0.0.1";
     private $_dbname = "SISekolah";
     private $_username = "root";
-    private $_password = "";
+    private $_password = "admin123";
 
     private $_pdo;
     private static $_instance = null;

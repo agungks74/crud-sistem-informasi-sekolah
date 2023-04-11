@@ -2,7 +2,7 @@
 mysqli_report(MYSQLI_REPORT_STRICT);
 
 try {
-    $mysqli = new mysqli("localhost", "root", "");
+    $mysqli = new mysqli("127.0.0.1", "root", "admin123");
 
     $mysqli->select_db("SISekolah");
 

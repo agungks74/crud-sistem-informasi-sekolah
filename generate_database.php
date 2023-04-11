@@ -21,9 +21,9 @@
                     <?php
 
 //KONFIGURASI DATABASE SERVER DISINI
-$host = "localhost";
+$host = "127.0.0.1";
 $user = "root";
-$pass = "";
+$pass = "admin123";
 
 $dsn = "mysql:host=$host";
 
